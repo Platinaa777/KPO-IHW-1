@@ -1,8 +1,8 @@
 [
     {
         "film": {
-            "name": "hello world",
-            "description": "something ....",
+            "name": "Spider-man",
+            "description": "cool film",
             "rating": 9,
             "durationMinutes": 150
         },
@@ -52,7 +52,7 @@
             "rating": 12,
             "durationMinutes": 210
         },
-        "startingHour": "2023-12-15T12:10:50",
+        "startingHour": "2023-12-19T15:15:40",
         "seats": [
             [
                 "FREE",
@@ -98,7 +98,7 @@
             "rating": 6,
             "durationMinutes": 150
         },
-        "startingHour": "2023-12-15T12:10:50",
+        "startingHour": "2023-12-23T17:00",
         "seats": [
             [
                 "FREE",
@@ -144,53 +144,7 @@
             "rating": 4,
             "durationMinutes": 120
         },
-        "startingHour": "2023-12-15T12:10:50",
-        "seats": [
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ]
-        ]
-    },
-    {
-        "film": {
-            "name": "the best film",
-            "description": "the best desc",
-            "rating": 10,
-            "durationMinutes": 123
-        },
-        "startingHour": "2026-11-10T17:00",
+        "startingHour": "2023-12-27T16:00:40",
         "seats": [
             [
                 "FREE",

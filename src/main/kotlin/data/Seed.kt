@@ -27,6 +27,7 @@ fun generateInit(dataContext: DataContext) {
 
 
     inputDateTime = "2023-12-19 15:15:40"
+    dateTime = LocalDateTime.parse(inputDateTime, formatter)
     seed = createSessionJSON(
         Film("Dark Knight", "very interesting fim", 12, 210),
         dateTime)
@@ -34,6 +35,7 @@ fun generateInit(dataContext: DataContext) {
 
 
     inputDateTime = "2023-12-23 17:00:00"
+    dateTime = LocalDateTime.parse(inputDateTime, formatter)
     seed = createSessionJSON(
         Film("Kolobok", "for children", 6, 150),
         dateTime)
@@ -41,6 +43,7 @@ fun generateInit(dataContext: DataContext) {
 
 
     inputDateTime = "2023-12-27 16:00:40"
+    dateTime = LocalDateTime.parse(inputDateTime, formatter)
     seed = createSessionJSON(
         Film("Five night with Freddy", "horror", 4, 120),
         dateTime)
