@@ -1,0 +1,232 @@
+[
+    {
+        "film": {
+            "name": "hello world",
+            "description": "something ....",
+            "rating": 9,
+            "durationMinutes": 150
+        },
+        "startingHour": "2023-12-15T12:10:50",
+        "seats": [
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ]
+        ]
+    },
+    {
+        "film": {
+            "name": "Dark Knight",
+            "description": "very interesting fim",
+            "rating": 12,
+            "durationMinutes": 210
+        },
+        "startingHour": "2023-12-15T12:10:50",
+        "seats": [
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ]
+        ]
+    },
+    {
+        "film": {
+            "name": "Kolobok",
+            "description": "for children",
+            "rating": 6,
+            "durationMinutes": 150
+        },
+        "startingHour": "2023-12-15T12:10:50",
+        "seats": [
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ]
+        ]
+    },
+    {
+        "film": {
+            "name": "Five night with Freddy",
+            "description": "horror",
+            "rating": 4,
+            "durationMinutes": 120
+        },
+        "startingHour": "2023-12-15T12:10:50",
+        "seats": [
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ]
+        ]
+    },
+    {
+        "film": {
+            "name": "the best film",
+            "description": "the best desc",
+            "rating": 10,
+            "durationMinutes": 123
+        },
+        "startingHour": "2026-11-10T17:00",
+        "seats": [
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ]
+        ]
+    }
+]
