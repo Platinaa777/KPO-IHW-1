@@ -3,21 +3,21 @@ package infrastructure.repositories
 import application.models.AddedSessionInfo
 import application.responses.ResponseType
 import application.models.SessionInfo
-import infrastructure.data.DataCinemaContext
+import infrastructure.data.DataContext
 import infrastructure.data.utils.numberPlaces
 import core.models.SeatType
 import core.models.Session
 import core.repositories.ICinemaRepository
 import java.time.LocalDateTime
 
-class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICinemaRepository {
+class CinemaRepository(private var dataContext: DataContext) : ICinemaRepository {
 
     override fun getAllSeatsForSession(id: Int ) : Session? {
-        return dataCinemaContext.getSessionId(id)
+        return dataContext.getSessionId(id)
     }
 
     override fun buySeatForSession(sessionId: Int, row: Int, column: Int): ResponseType {
-        val session = dataCinemaContext.getSessionId(sessionId)
+        val session = dataContext.getSessionId(sessionId)
 
         var checkingResult = checkSeatIsValidToAction(session, row, column);
         if (checkingResult != ResponseType.SUCCESS) {
@@ -34,13 +34,13 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
 
         session.seats[row][column] = SeatType.SOLD
 
-        dataCinemaContext.saveChangesForSession(sessionId, session)
+        dataContext.saveChangesForSession(sessionId, session)
 
         return ResponseType.SUCCESS
     }
 
     override fun returnTicketForSession(sessionId: Int, row: Int, column: Int): ResponseType {
-        val session = dataCinemaContext.getSessionId(sessionId)
+        val session = dataContext.getSessionId(sessionId)
 
         var checkingResult = checkSeatIsValidToAction(session, row, column);
         if (checkingResult != ResponseType.SUCCESS) {
@@ -57,13 +57,13 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
 
         session.seats[row][column] = SeatType.FREE
 
-        dataCinemaContext.saveChangesForSession(sessionId, session)
+        dataContext.saveChangesForSession(sessionId, session)
 
         return ResponseType.SUCCESS
     }
 
     override fun changeTimeForSession(sessionId: Int, newTime: LocalDateTime): ResponseType {
-        var session = dataCinemaContext.getSessionId(sessionId)
+        var session = dataContext.getSessionId(sessionId)
 
         if (session == null) {
             return ResponseType.SESSION_NOT_EXIST
@@ -72,9 +72,9 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
         var start = newTime
         var end = newTime.plusMinutes(session.film.durationMinutes.toLong())
 
-        val storage = dataCinemaContext.getAllSessions()
+        val storage = dataContext.getAllSessions()
 
-        for (i in 0..(dataCinemaContext.getSizeOfStorage() - 1)) {
+        for (i in 0..(dataContext.getSizeOfStorage() - 1)) {
             if (i == sessionId) continue
 
             var currentSession = storage[i]
@@ -87,32 +87,32 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
         }
 
         session.startingHour = newTime
-        dataCinemaContext.saveChangesForSession(sessionId, session)
+        dataContext.saveChangesForSession(sessionId, session)
 
         return ResponseType.SUCCESS
     }
 
     override fun changeNameOfFilm(sessionId: Int, newName: String): ResponseType {
-        var session = dataCinemaContext.getSessionId(sessionId)
+        var session = dataContext.getSessionId(sessionId)
 
         if (session == null) {
             return ResponseType.SESSION_NOT_EXIST
         }
 
         session.film.name = newName
-        dataCinemaContext.saveChangesForSession(sessionId, session)
+        dataContext.saveChangesForSession(sessionId, session)
         return ResponseType.SUCCESS
     }
 
     override fun changeDescriptionOfFilm(sessionId: Int, newDescription: String): ResponseType {
-        var session = dataCinemaContext.getSessionId(sessionId)
+        var session = dataContext.getSessionId(sessionId)
 
         if (session == null) {
             return ResponseType.SESSION_NOT_EXIST
         }
 
         session.film.description = newDescription
-        dataCinemaContext.saveChangesForSession(sessionId, session)
+        dataContext.saveChangesForSession(sessionId, session)
         return ResponseType.SUCCESS
     }
 
@@ -121,9 +121,9 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
         var start = session.startingHour
         var end = session.startingHour.plusMinutes(session.film.durationMinutes.toLong())
 
-        val storage = dataCinemaContext.getAllSessions()
+        val storage = dataContext.getAllSessions()
 
-        for (i in 0..(dataCinemaContext.getSizeOfStorage() - 1)) {
+        for (i in 0..(dataContext.getSizeOfStorage() - 1)) {
             var currentSession = storage[i]
 
             if (isNewIntervalInterceptSmt(currentSession.startingHour,
@@ -136,12 +136,12 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
         val newSession = Session(session.film, session.startingHour,
             MutableList(numberPlaces) { MutableList(numberPlaces) { SeatType.FREE } })
 
-        dataCinemaContext.insert(newSession)
-        return AddedSessionInfo(dataCinemaContext.getSizeOfStorage() - 1, true)
+        dataContext.insert(newSession)
+        return AddedSessionInfo(dataContext.getSizeOfStorage() - 1, true)
     }
 
     override fun markSeatIsOccupied(sessionId: Int, row: Int, column: Int): ResponseType {
-        val session = dataCinemaContext.getSessionId(sessionId)
+        val session = dataContext.getSessionId(sessionId)
 
         var checkingResult = checkSeatIsValidToAction(session, row, column);
         if (checkingResult != ResponseType.SUCCESS) {
@@ -158,7 +158,7 @@ class CinemaRepository(private var dataCinemaContext: DataCinemaContext) : ICine
 
         session.seats[row][column] = SeatType.HERE
 
-        dataCinemaContext.saveChangesForSession(sessionId, session)
+        dataContext.saveChangesForSession(sessionId, session)
 
         return ResponseType.SUCCESS
     }

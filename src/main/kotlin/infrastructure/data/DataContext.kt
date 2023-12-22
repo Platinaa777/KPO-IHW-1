@@ -4,7 +4,7 @@ import core.models.SeatType
 import infrastructure.data.utils.*
 import core.models.Session
 
-class DataCinemaContext {
+class DataContext {
 
     val connectionString = "./data/cinema.json"
     private var isCached = false;

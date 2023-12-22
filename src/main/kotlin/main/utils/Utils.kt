@@ -3,7 +3,7 @@ package main.utils
 import application.models.Actions
 import application.responses.SeatResponse
 import application.responses.TimeResponse
-import infrastructure.data.DataCinemaContext
+import infrastructure.data.DataContext
 import infrastructure.data.utils.seed
 import core.models.Film
 import infrastructure.repositories.CinemaRepository
@@ -34,7 +34,7 @@ fun configure(App: App) : App {
 
     var newApp = App
 
-    newApp.addCinemaRepository(CinemaRepository(seed(DataCinemaContext())))
+    newApp.addCinemaRepository(CinemaRepository(seed(DataContext())))
 
     newApp.addCinemaService(
         CinemaService(newApp.getCinemaRepository())
