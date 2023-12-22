@@ -1,19 +1,16 @@
 package main.utils
 
 import application.models.Actions
-import application.responses.SeatResponse
+import application.models.FilmInfo
+import application.models.SessionWithFilmData
 import application.responses.TimeResponse
-import infrastructure.data.DataContext
-import infrastructure.data.utils.seed
-import core.models.Film
-import infrastructure.repositories.CinemaRepositoryImpl
-import application.services.interfaces.CinemaService
-import core.models.Session
+import application.services.interfaces.CinemaPartService
+import core.models.Ticket
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Scanner
+import java.util.*
 
-fun printIntoduction() {
+fun printIntroduction() {
     println()
     println("Choose options:")
     println("1) Buy ticket for cinema")
@@ -29,34 +26,24 @@ fun printIntoduction() {
     println()
 }
 
-fun configure(App: App) : App {
-
-    var newApp = App
-
-    newApp.addCinemaRepository(CinemaRepositoryImpl(seed(DataContext())))
-
-    newApp.addCinemaService(
-        CinemaService(newApp.getCinemaRepository())
-    )
-
-    return newApp
+fun readSessionNumber(): Int {
+    try {
+        print("input number of session: ")
+        return readln().toInt()
+    } catch (_: Exception) {}
+    return 0
 }
 
-fun readSessionNumber() : Int {
-    print("input number of session: ")
-    return readln().toInt()
-}
-
-fun printSessionInformation(currentSession: Session,
-                            sessionNumber: Int) {
+fun printSessionInformation(currentSession: SessionWithFilmData) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-    println("Film name = ${currentSession.film.name},\n" +
-            "Description = ${currentSession.film.description}\n" +
-            "Rating = ${currentSession.film.rating}\n" +
-            "Duration = ${currentSession.film.durationMinutes}\n" +
-            "Datetime = ${currentSession.startingHour.format(formatter)}\n" +
-            "Cinema:")
+    println("Session ID = ${currentSession.Id}\n" +
+            "Film name = ${currentSession.name}\n" +
+            "Description = ${currentSession.description}\n" +
+            "Rating = ${currentSession.rating}\n" +
+            "Duration = ${currentSession.durationMinutes}\n" +
+            "Datetime = ${currentSession.startingHour.format(formatter)}\n")
+
 
     for (item in currentSession.seats) {
         item.forEach { it -> print("$it ") }
@@ -64,27 +51,30 @@ fun printSessionInformation(currentSession: Session,
     }
 }
 
-fun getDataForSeat(cinemaService: application.services.interfaces.CinemaService, action: Actions) : SeatResponse {
+fun getDataForSeat(cinemaService: CinemaPartService, action: Actions): Ticket? {
     val sessionNumber = readSessionNumber()
 
     var session = cinemaService.getAllPlacesForSession(sessionNumber)
     if (session == null) {
         println("Session not found")
-        return SeatResponse(-1,-1,-1)
+        return null
     }
+    var id = 0
+    printSessionInformation(session)
 
-    printSessionInformation(session, sessionNumber)
+    try {
+        print("Input row of seat what you want to ${action.toString().lowercase()} ")
+        val x = readln().toInt()
+        print("Input column of seat what you want to ${action.toString().lowercase()} ")
+        val y = readln().toInt()
 
+        return Ticket(id, session.Id, x - 1, y - 1)
+    } catch (e: Exception) { }
 
-    print("Input row of seat what you want to ${action.toString().lowercase()} ")
-    var x = readln().toInt()
-    print("Input column of seat what you want to ${action.toString().lowercase()} ")
-    var y = readln().toInt()
-
-    return SeatResponse(sessionNumber, x - 1, y - 1)
+    return null
 }
 
-fun inputDateTime() : TimeResponse {
+fun inputDateTime(): TimeResponse {
     val scanner = Scanner(System.`in`)
     print("Input date in format yyyy-MM-dd HH:mm:ss: ")
     val inputDateTime = scanner.nextLine()
@@ -100,14 +90,15 @@ fun inputDateTime() : TimeResponse {
     return response
 }
 
-fun inputFilmInformation() : Film {
+fun inputFilmInformation(): FilmInfo {
     print("Input name of film: ")
     var name = readln()
 
     print("Input description of film: ")
     var description = readln()
 
-    var rating = 0;
+    var id = 0
+    var rating = 0
     var duration = 0
 
     try {
@@ -117,8 +108,8 @@ fun inputFilmInformation() : Film {
         print("Input duration of film: ")
         duration = readln().toUInt().toInt()
     } catch (e: Exception) {
-        return Film("","", -1,-1)
+        return FilmInfo("", "", -1, -1)
     }
 
-    return Film(name, description, rating, duration)
+    return FilmInfo(name, description, rating, duration)
 }

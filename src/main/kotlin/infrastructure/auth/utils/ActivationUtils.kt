@@ -4,16 +4,18 @@ import infrastructure.auth.AuthServer
 import infrastructure.auth.entities.UserAuthOption
 
 
-fun activateAuthentication(authServer: AuthServer, currentSession: UserAuthOption) : UserAuthOption {
+fun activateAuthentication(authServer: AuthServer, currentSession: UserAuthOption): UserAuthOption {
     var choice: String = ""
 
     if (!authServer.tryToLogin(currentSession.userName, currentSession.password)) {
         while (true) {
+            println()
             println("Session does not exist, try to log in or sign up")
             println("1) sign up")
             println("2) log in")
             print("Push button - ")
             choice = readln()
+            println()
 
             if (choice == "1") {
                 var data = inputUserData()
@@ -37,7 +39,7 @@ fun activateAuthentication(authServer: AuthServer, currentSession: UserAuthOptio
     return currentSession
 }
 
-fun inputUserData() : Pair<String, String> {
+fun inputUserData(): Pair<String, String> {
     print("Input user name: ")
     val name = readln()
     print("Input password: ")

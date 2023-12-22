@@ -1,78 +1,36 @@
 package infrastructure.data
 
-import core.models.SeatType
-import infrastructure.data.utils.*
+import core.models.Film
 import core.models.Session
+import core.models.Ticket
+import infrastructure.data.entities.SessionJSON
+import infrastructure.data.utils.*
 
-class DataContext {
+class DataContext(val connectionString: String = "./data/") {
 
-    val connectionString = "./data/cinema.json"
-    private var isCached = false;
-
-    var listOfSessions = mutableListOf<Session>()
-
-    fun getSessionId(id: Int) : Session? {
-        if (isCached) {
-            if (id < 0 || id >= listOfSessions.size) {
-                return null
-            }
-
-            return listOfSessions[id]
-        }
-
-        listOfSessions = readAllFromJson(connectionString).map{ Mapper().toDomain(it) }.toMutableList()
-        if (id < 0 || id >= listOfSessions.size) {
-            return null
-        }
-
-        isCached = true
-        return listOfSessions[id]
+    fun getAllSessions(): MutableList<Session> {
+        return readJsonSessions(connectionString + SESSION)
+            .map { Mapper().toDomain(it) }.toMutableList()
     }
 
-    fun getAllSessions() : MutableList<Session> {
-        if (isCached) {
-            return listOfSessions
-        }
-        listOfSessions = readAllFromJson(connectionString).map{ Mapper().toDomain(it) }.toMutableList()
-        isCached = true
-        return listOfSessions
+    fun getAllFilms(): MutableList<Film> {
+        return readJsonFilms(connectionString + FILM)
     }
 
-    fun insert(session: Session) {
-        isCached = false
-        listOfSessions.add(session)
-
-        clearJsonFile(connectionString)
-
-        for (item in listOfSessions) {
-            appendSessionToJson(createSessionJSON(item.film,
-                item.startingHour,
-                MutableList(numberPlaces) { MutableList(numberPlaces) { SeatType.FREE } }),
-                connectionString)
-        }
-        isCached = true
+    fun getAllTickets(): MutableList<Ticket> {
+        return readJsonTickets(connectionString + TICKET)
     }
 
-    fun getSizeOfStorage() : Int {
-        if (isCached) {
-            return listOfSessions.size
-        }
-
-        listOfSessions = readAllFromJson(connectionString).map{ Mapper().toDomain(it) }.toMutableList()
-        isCached = true
-        return listOfSessions.size
+    fun saveChangesSessions(sessions: MutableList<SessionJSON>) {
+        writeToJsonSessions(sessions, connectionString + SESSION)
     }
 
-    fun saveChangesForSession(id: Int, newSession: Session) {
-        listOfSessions[id] = newSession
-
-        clearJsonFile(connectionString)
-
-        for (item in listOfSessions) {
-            appendSessionToJson(createSessionJSON(item.film, item.startingHour, item.seats), connectionString)
-        }
-        isCached = true
+    fun saveChangesFilms(films: MutableList<Film>) {
+        writeToJsonFilms(films, connectionString + FILM)
     }
 
+    fun saveChangesTickets(tickets: MutableList<Ticket>) {
+        writeToJsonTickets(tickets, connectionString + TICKET)
+    }
 }
 

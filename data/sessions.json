@@ -1,15 +1,10 @@
 [
     {
-        "film": {
-            "name": "Spider-man",
-            "description": "cool film",
-            "rating": 9,
-            "durationMinutes": 150
-        },
-        "startingHour": "2024-12-12T12:31:32",
+        "Id": 1,
+        "startingHour": "2023-12-15T17:40:15",
         "seats": [
             [
-                "SOLD",
+                "FREE",
                 "FREE",
                 "FREE",
                 "FREE",
@@ -46,16 +41,11 @@
         ]
     },
     {
-        "film": {
-            "name": "Dark Knight",
-            "description": "very interesting fim",
-            "rating": 12,
-            "durationMinutes": 210
-        },
+        "Id": 2,
         "startingHour": "2023-12-23T15:15:40",
         "seats": [
             [
-                "SOLD",
+                "FREE",
                 "FREE",
                 "FREE",
                 "FREE",
@@ -63,7 +53,7 @@
             ],
             [
                 "FREE",
-                "FREE",
+                "SOLD",
                 "FREE",
                 "FREE",
                 "FREE"
@@ -92,12 +82,7 @@
         ]
     },
     {
-        "film": {
-            "name": "Kolobok",
-            "description": "for children",
-            "rating": 6,
-            "durationMinutes": 150
-        },
+        "Id": 3,
         "startingHour": "2023-12-25T17:00:00",
         "seats": [
             [
@@ -138,12 +123,7 @@
         ]
     },
     {
-        "film": {
-            "name": "Five night with Freddy",
-            "description": "horror",
-            "rating": 4,
-            "durationMinutes": 120
-        },
+        "Id": 4,
         "startingHour": "2023-12-27T16:00:40",
         "seats": [
             [
@@ -180,52 +160,6 @@
                 "FREE",
                 "FREE",
                 "FREE"
-            ]
-        ]
-    },
-    {
-        "film": {
-            "name": "something strange",
-            "description": "...",
-            "rating": 2,
-            "durationMinutes": 200
-        },
-        "startingHour": "2024-12-13T15:00:00",
-        "seats": [
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE"
-            ],
-            [
-                "FREE",
-                "FREE",
-                "FREE",
-                "FREE",
-                "SOLD"
             ]
         ]
     }

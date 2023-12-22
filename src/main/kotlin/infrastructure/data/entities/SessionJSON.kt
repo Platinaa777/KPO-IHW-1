@@ -1,12 +1,11 @@
 package infrastructure.data.entities
 
-import kotlinx.serialization.Serializable
-import core.models.Film
 import core.models.SeatType
+import kotlinx.serialization.Serializable
 
 @Serializable
-class SessionJSON (
-    val film: Film,
+class SessionJSON(
+    val Id: Int,
     var startingHour: String,
     var seats: MutableList<MutableList<SeatType>>
 )
