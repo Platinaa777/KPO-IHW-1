@@ -7,10 +7,10 @@ import infrastructure.data.DataContext
 import infrastructure.data.utils.numberPlaces
 import core.models.SeatType
 import core.models.Session
-import core.repositories.ICinemaRepository
+import core.repositories.CinemaRepository
 import java.time.LocalDateTime
 
-class CinemaRepository(private var dataContext: DataContext) : ICinemaRepository {
+class CinemaRepositoryImpl(private var dataContext: DataContext) : CinemaRepository {
 
     override fun getAllSeatsForSession(id: Int ) : Session? {
         return dataContext.getSessionId(id)

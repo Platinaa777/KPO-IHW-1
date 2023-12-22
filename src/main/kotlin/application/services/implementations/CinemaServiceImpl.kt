@@ -3,12 +3,13 @@ package application.services.implementations
 import application.models.AddedSessionInfo
 import application.models.SessionInfo
 import core.models.Session
-import core.repositories.ICinemaRepository
-import application.services.interfaces.ICinemaService
+import core.repositories.CinemaRepository
+import application.services.interfaces.CinemaService
 import application.services.utils.ResponseDataHandler
 import java.time.LocalDateTime
 
-class CinemaService(var cinemaRepository: ICinemaRepository) : ICinemaService {
+class CinemaServiceImpl(var cinemaRepository: CinemaRepository) :
+    CinemaService {
     override fun getAllPlacesForSession(id: Int) : Session? {
         var session =  cinemaRepository.getAllSeatsForSession(id)
         return session

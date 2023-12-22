@@ -1,20 +1,20 @@
 package main.utils
 
 import infrastructure.data.DataContext
-import core.repositories.ICinemaRepository
-import application.services.interfaces.ICinemaService
+import core.repositories.CinemaRepository
+import application.services.interfaces.CinemaService
 
 class App() {
 
-    private var cinemaService: ICinemaService? = null
-    private var cinemaRepository: ICinemaRepository? = null
+    private var cinemaService: CinemaService? = null
+    private var cinemaRepository: CinemaRepository? = null
     private var dbContext : DataContext? = null
 
-    fun addCinemaService(cinemaService: ICinemaService) {
+    fun addCinemaService(cinemaService: CinemaService) {
         this.cinemaService = cinemaService
     }
 
-    fun addCinemaRepository(cinemaRepository: ICinemaRepository) {
+    fun addCinemaRepository(cinemaRepository: CinemaRepository) {
         this.cinemaRepository = cinemaRepository
     }
 
@@ -26,11 +26,11 @@ class App() {
         return dbContext!!
     }
 
-    fun getCinemaService() : ICinemaService {
+    fun getCinemaService() : CinemaService {
         return cinemaService!!
     }
 
-    fun getCinemaRepository() : ICinemaRepository {
+    fun getCinemaRepository() : CinemaRepository {
         return cinemaRepository!!
     }
 }

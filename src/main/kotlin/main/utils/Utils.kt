@@ -6,9 +6,8 @@ import application.responses.TimeResponse
 import infrastructure.data.DataContext
 import infrastructure.data.utils.seed
 import core.models.Film
-import infrastructure.repositories.CinemaRepository
-import application.services.implementations.CinemaService
-import application.services.interfaces.ICinemaService
+import infrastructure.repositories.CinemaRepositoryImpl
+import application.services.interfaces.CinemaService
 import core.models.Session
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -34,7 +33,7 @@ fun configure(App: App) : App {
 
     var newApp = App
 
-    newApp.addCinemaRepository(CinemaRepository(seed(DataContext())))
+    newApp.addCinemaRepository(CinemaRepositoryImpl(seed(DataContext())))
 
     newApp.addCinemaService(
         CinemaService(newApp.getCinemaRepository())
@@ -65,7 +64,7 @@ fun printSessionInformation(currentSession: Session,
     }
 }
 
-fun getDataForSeat(cinemaService: ICinemaService, action: Actions) : SeatResponse {
+fun getDataForSeat(cinemaService: application.services.interfaces.CinemaService, action: Actions) : SeatResponse {
     val sessionNumber = readSessionNumber()
 
     var session = cinemaService.getAllPlacesForSession(sessionNumber)

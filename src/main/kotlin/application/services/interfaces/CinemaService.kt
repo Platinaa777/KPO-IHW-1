@@ -5,7 +5,7 @@ import application.models.SessionInfo
 import core.models.Session
 import java.time.LocalDateTime
 
-interface ICinemaService {
+interface CinemaService {
 
     fun getAllPlacesForSession(sessionId: Int) : Session?
     fun buyTicketForSession(sessionId: Int, row: Int, column: Int) : String

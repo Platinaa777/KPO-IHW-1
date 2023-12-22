@@ -6,7 +6,7 @@ import application.responses.ResponseType
 import core.models.Session
 import java.time.LocalDateTime
 
-interface ICinemaRepository {
+interface CinemaRepository {
     fun getAllSeatsForSession(id: Int) : Session?
     fun buySeatForSession(sessionId: Int, row: Int, column: Int) : ResponseType
     fun returnTicketForSession(sessionId: Int, row: Int, column: Int) : ResponseType
