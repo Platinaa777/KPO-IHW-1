@@ -6,10 +6,10 @@
             "rating": 9,
             "durationMinutes": 150
         },
-        "startingHour": "2023-12-15T12:10:50",
+        "startingHour": "2024-12-12T12:31:32",
         "seats": [
             [
-                "FREE",
+                "SOLD",
                 "FREE",
                 "FREE",
                 "FREE",
@@ -52,10 +52,10 @@
             "rating": 12,
             "durationMinutes": 210
         },
-        "startingHour": "2023-12-19T15:15:40",
+        "startingHour": "2023-12-23T15:15:40",
         "seats": [
             [
-                "FREE",
+                "SOLD",
                 "FREE",
                 "FREE",
                 "FREE",
@@ -98,7 +98,7 @@
             "rating": 6,
             "durationMinutes": 150
         },
-        "startingHour": "2023-12-23T17:00",
+        "startingHour": "2023-12-25T17:00:00",
         "seats": [
             [
                 "FREE",
@@ -180,6 +180,52 @@
                 "FREE",
                 "FREE",
                 "FREE"
+            ]
+        ]
+    },
+    {
+        "film": {
+            "name": "something strange",
+            "description": "...",
+            "rating": 2,
+            "durationMinutes": 200
+        },
+        "startingHour": "2024-12-13T15:00:00",
+        "seats": [
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE"
+            ],
+            [
+                "FREE",
+                "FREE",
+                "FREE",
+                "FREE",
+                "SOLD"
             ]
         ]
     }

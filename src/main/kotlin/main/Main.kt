@@ -1,10 +1,11 @@
 package main
 
-import auth.AuthServer
-import auth.activateAuthentication
-import core.Actions
-import core.SessionInfo
-import core.UserAuthOption
+import infrastructure.auth.AuthServer
+import application.models.Actions
+import application.models.SessionInfo
+import infrastructure.auth.entities.UserAuthOption
+import infrastructure.auth.utils.activateAuthentication
+import main.utils.*
 
 fun main() {
     var app = App()
@@ -45,7 +46,12 @@ fun main() {
             println(resultFromServer)
         } else if (choice == "3") {
             sessionNumber = readSessionNumber()
-            printSessionInformation(cinemaService, sessionNumber)
+            var session = cinemaService.getAllPlacesForSession(sessionNumber)
+            if (session == null) {
+                println("Session does not exist")
+                continue
+            }
+            printSessionInformation(session, sessionNumber)
         } else if (choice == "4") {
             sessionNumber = readSessionNumber()
             var data = inputDateTime()
