@@ -17,7 +17,7 @@ class ResponseDataHandler(val responseType: ResponseType) {
             ResponseType.SESSION_ADDED -> "SERVER: Session successfully was added"
             ResponseType.TICKET_IS_NOT_EXIST -> "SERVER: Ticket is not exist"
             ResponseType.CANT_BOUGHT_TICKET -> "SERVER: Ticket is already bought, you cant buy it again"
-            ResponseType.FILM_IS_NOT_EXIST -> "SERVER: "
+            ResponseType.FILM_IS_NOT_EXIST -> "SERVER: Session and film is not exist"
         }
     }
 }

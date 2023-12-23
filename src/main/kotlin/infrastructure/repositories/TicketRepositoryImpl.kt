@@ -1,40 +1,31 @@
 package infrastructure.repositories
 
+import application.responses.BuyTicketResponse
 import application.responses.ResponseType
 import core.models.SeatType
 import core.models.Session
 import core.models.Ticket
 import core.repositories.TicketRepository
 import infrastructure.data.DataContext
-import infrastructure.data.utils.SESSION
-import infrastructure.data.utils.TICKET
 import infrastructure.data.utils.createSessionJSON
 import java.time.LocalDateTime
 
-class TicketRepositoryImpl(val dataContext: DataContext) : TicketRepository {
-    override fun returnTicket(ticketId: Int): ResponseType {
-        var newTicketsGroup = dataContext.getAllTickets()
+class TicketRepositoryImpl(private val dataContext: DataContext) : TicketRepository {
 
-        if (!isTicketExist(newTicketsGroup, ticketId)) {
+    override fun returnTicket(ticket: Ticket, sessions: MutableList<Session>): ResponseType {
+        if (ticket.isDeleted) {
             return ResponseType.TICKET_IS_NOT_EXIST
         }
-
-        val ticket = newTicketsGroup.find { it -> it.id == ticketId }
-        if (ticket == null) {
-            return ResponseType.TICKET_IS_NOT_EXIST
-        }
-
-        val sessions = dataContext.getAllSessions()
         val session = sessions.find { it -> it.Id == ticket.sessionId}
 
-        val checkingResult = checkSeatIsValidToAction(session, ticket.row, ticket.column);
+        val checkingResult = checkSeatIsValidToAction(session, ticket.row, ticket.column)
         if (checkingResult != ResponseType.SUCCESS) {
             return checkingResult
         }
 
         try {
             if (session!!.seats[ticket.row][ticket.column] == SeatType.FREE &&
-                session!!.seats[ticket.row][ticket.column] == SeatType.HERE
+                session.seats[ticket.row][ticket.column] == SeatType.HERE
             ) {
                 return ResponseType.CANT_RETURN
             }
@@ -48,7 +39,7 @@ class TicketRepositoryImpl(val dataContext: DataContext) : TicketRepository {
             if (element.Id == session.Id) {
                 element.seats = session.seats
                 dataContext.saveChangesSessions(sessions.map { it -> createSessionJSON(it) }.toMutableList())
-                newTicketsGroup = deleteTicketById(ticket.id)
+                val newTicketsGroup = deleteTicketById(ticket.id)
                 dataContext.saveChangesTickets(newTicketsGroup)
                 break
             }
@@ -57,27 +48,22 @@ class TicketRepositoryImpl(val dataContext: DataContext) : TicketRepository {
         return ResponseType.SUCCESS
     }
 
-    override fun buyTicket(ticket: Ticket): ResponseType {
-        var newTicketsGroup = dataContext.getAllTickets()
+    override fun buyTicket(ticket: Ticket, sessions: MutableList<Session>): BuyTicketResponse {
+        val newTicketsGroup = dataContext.getAllTickets()
 
-        if (isTicketExist(newTicketsGroup, ticket.id)) {
-            return ResponseType.CANT_BOUGHT_TICKET
-        }
-
-        val sessions = dataContext.getAllSessions()
         val session = sessions.find { it -> it.Id == ticket.sessionId }
 
-        val checkingResult = checkSeatIsValidToAction(session, ticket.row, ticket.column);
+        val checkingResult = checkSeatIsValidToAction(session, ticket.row, ticket.column)
         if (checkingResult != ResponseType.SUCCESS) {
-            return checkingResult
+            return BuyTicketResponse(checkingResult, -1)
         }
 
         try {
             if (session!!.seats[ticket.row][ticket.column] != SeatType.FREE) {
-                return ResponseType.ALREADY_SOLD
+                return BuyTicketResponse(ResponseType.ALREADY_SOLD, -1)
             }
         } catch (e: Exception) {
-            return ResponseType.INVALID_ROW_COLUMN
+            return BuyTicketResponse(ResponseType.INVALID_ROW_COLUMN, -1)
         }
 
         session.seats[ticket.row][ticket.column] = SeatType.SOLD
@@ -86,29 +72,20 @@ class TicketRepositoryImpl(val dataContext: DataContext) : TicketRepository {
             if (element.Id == session.Id) {
                 element.seats = session.seats
                 dataContext.saveChangesSessions(sessions.map {it -> createSessionJSON(it) }.toMutableList())
-                newTicketsGroup.add(Ticket(ticket.id, ticket.sessionId, ticket.row, ticket.column))
+                newTicketsGroup.add(Ticket(newTicketsGroup.size + 1, ticket.sessionId, ticket.row, ticket.column))
                 dataContext.saveChangesTickets(newTicketsGroup)
                 break
             }
         }
 
-        return ResponseType.SUCCESS
+        return BuyTicketResponse(ResponseType.SUCCESS, newTicketsGroup.size)
     }
 
-    override fun markTicketIsUsed(ticketId: Int): ResponseType {
-        val ticket = dataContext.getAllTickets().find { it -> it.id == ticketId }
-        if (ticket == null) {
+    override fun markTicketIsUsed(ticket: Ticket, session: Session, sessions: MutableList<Session>): ResponseType {
+        if (ticket.isDeleted) {
             return ResponseType.TICKET_IS_NOT_EXIST
         }
-
-        val sessions = dataContext.getAllSessions()
-        val session = sessions.find { it -> it.Id == ticket.sessionId }
-
-        if (session == null) {
-            return ResponseType.SESSION_NOT_EXIST
-        }
-
-        var checkingResult = checkSeatIsValidToAction(session, ticket.row, ticket.column);
+        val checkingResult = checkSeatIsValidToAction(session, ticket.row, ticket.column)
         if (checkingResult != ResponseType.SUCCESS) {
             return checkingResult
         }
@@ -134,26 +111,25 @@ class TicketRepositoryImpl(val dataContext: DataContext) : TicketRepository {
         return ResponseType.SUCCESS
     }
 
-    private fun deleteTicketById(id: Int): MutableList<Ticket> {
-        var tickets = dataContext.getAllTickets()
-
-        var newListOfTickets = mutableListOf<Ticket>()
-        for (ticket in tickets) {
-            if (ticket.id != id) {
-                newListOfTickets.add(ticket)
-            }
-        }
-
-        return newListOfTickets
+    override fun getTicketById(id: Int): Ticket? {
+        val ticket = dataContext.getAllTickets().find { it -> it.id == id }
+        return ticket
     }
 
-    private fun isTicketExist(tickets: MutableList<Ticket>, id: Int): Boolean {
-        for (item in tickets) {
-            if (item.id == id) {
-                return true
+    override fun getAllTickets(): MutableList<Ticket> {
+        return dataContext.getAllTickets()
+    }
+
+    private fun deleteTicketById(id: Int): MutableList<Ticket> {
+        val tickets = dataContext.getAllTickets()
+
+        for (ticket in tickets) {
+            if (ticket.id == id) {
+                ticket.isDeleted = true
             }
         }
-        return false
+
+        return tickets
     }
 
     private fun checkSeatIsValidToAction(session: Session?, row: Int, column: Int): ResponseType {

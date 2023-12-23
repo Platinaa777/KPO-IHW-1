@@ -9,13 +9,11 @@ import core.models.Session
 import core.repositories.SessionRepository
 import infrastructure.data.DataContext
 import infrastructure.data.functions.JoinFunctions
-import infrastructure.data.utils.FILM
-import infrastructure.data.utils.SESSION
 import infrastructure.data.utils.createSessionJSON
 import infrastructure.data.utils.numberPlaces
 import java.time.LocalDateTime
 
-class SessionRepositoryImpl(val dataContext: DataContext) : SessionRepository {
+class SessionRepositoryImpl(private val dataContext: DataContext) : SessionRepository {
     override fun getAllSeatsForSession(id: Int): SessionWithFilmData? {
         var joinedData = JoinFunctions()
             .JoinGettingFullData(
@@ -25,14 +23,12 @@ class SessionRepositoryImpl(val dataContext: DataContext) : SessionRepository {
         return joinedData.find { it -> it.Id == id }
     }
 
-    override fun addSession(session: SessionInfo): ResponseType {
-        var start = session.startingHour
-        var end = session.startingHour.plusMinutes(session.film.durationMinutes.toLong())
+    override fun addSession(session: SessionInfo, storageFilms: MutableList<Film>): ResponseType {
+        val start = session.startingHour
+        val end = session.startingHour.plusMinutes(session.film.durationMinutes.toLong())
 
         val storageSessions = dataContext.getAllSessions()
-        val storageFilms = dataContext.getAllFilms()
-
-        var joinedData = JoinFunctions().JoinSessionAndFilm(storageSessions, storageFilms)
+        val joinedData = JoinFunctions().JoinSessionAndFilm(storageSessions, storageFilms)
 
         for (currentSession in joinedData) {
             if (isNewIntervalInterceptSmt(
@@ -52,24 +48,23 @@ class SessionRepositoryImpl(val dataContext: DataContext) : SessionRepository {
         storageSessions.add(newSession)
         storageFilms.add(newFilm)
         dataContext.saveChangesSessions(storageSessions.map { it -> createSessionJSON(it) }.toMutableList())
-
+        dataContext.saveChangesFilms(storageFilms)
         return ResponseType.SESSION_ADDED
     }
 
-    override fun changeTimeForSession(sessionId: Int, newTime: LocalDateTime): ResponseType {
+    override fun changeTimeForSession(sessionId: Int, newTime: LocalDateTime,  storageFilms: MutableList<Film>): ResponseType {
         val storageSessions = dataContext.getAllSessions()
-        val storageFilms = dataContext.getAllFilms()
 
-        var joinedData = JoinFunctions().JoinSessionAndFilm(storageSessions, storageFilms)
+        val joinedData = JoinFunctions().JoinSessionAndFilm(storageSessions, storageFilms)
 
-        var element = joinedData.find { it -> it.sessionId == sessionId }
+        val element = joinedData.find { it -> it.sessionId == sessionId }
 
         if (element == null) {
             return ResponseType.SESSION_NOT_EXIST
         }
 
-        var start = element.startingHour
-        var end = newTime.plusMinutes(element.durationMinutes.toLong())
+        val start = element.startingHour
+        val end = newTime.plusMinutes(element.durationMinutes.toLong())
 
 
         for (currentSession in joinedData) {
@@ -92,6 +87,14 @@ class SessionRepositoryImpl(val dataContext: DataContext) : SessionRepository {
         }
 
         return ResponseType.SUCCESS
+    }
+
+    override fun getSessionById(id: Int): Session? {
+        return dataContext.getAllSessions().find { it -> it.Id == id }
+    }
+
+    override fun getAllSessions(): MutableList<Session> {
+        return dataContext.getAllSessions()
     }
 
     private fun isNewIntervalInterceptSmt(

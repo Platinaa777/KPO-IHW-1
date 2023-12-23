@@ -7,4 +7,6 @@ interface FilmRepository {
     fun changeNameOfFilm(filmId: Int, newName: String): ResponseType
     fun changeDescriptionOfFilm(filmId: Int, newDescription: String): ResponseType
     fun addFilm(film: Film)
+    fun getAllFilms() : MutableList<Film>
+    fun getFilmById(id: Int) : Film?
 }
